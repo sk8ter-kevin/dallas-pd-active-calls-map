@@ -1,0 +1,11 @@
+# Python bytecode
+__pycache__/
+*.pyc
+
+# App-generated cache
+geocode-cache.json
+
+# macOS junk
+.DS_Store
+data/geocode-cache.json
+__pycache__/

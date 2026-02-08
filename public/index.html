@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dallas PD Active Calls Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Public Safety Monitor</p>
+          <h1>Dallas PD Active Calls</h1>
+          <p class="subtitle">
+            Live calls for service mapped from Dallas Open Data.
+          </p>
+        </div>
+        <div class="stats">
+          <article class="stat-card">
+            <p class="stat-label">Total Calls</p>
+            <p class="stat-value" id="totalCalls">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Mapped</p>
+            <p class="stat-value" id="mappedCalls">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Unmapped</p>
+            <p class="stat-value" id="unmappedCalls">0</p>
+          </article>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="map-panel">
+          <div id="map" aria-label="Map of active Dallas PD calls"></div>
+          <div class="legend">
+            <p class="legend-title">Priority</p>
+            <div class="legend-grid">
+              <span><i class="dot p1"></i>1</span>
+              <span><i class="dot p2"></i>2</span>
+              <span><i class="dot p3"></i>3</span>
+              <span><i class="dot p4"></i>4</span>
+              <span><i class="dot p0"></i>Unknown</span>
+            </div>
+          </div>
+        </section>
+
+        <aside class="side-panel">
+          <div class="controls">
+            <label for="divisionFilter">Division</label>
+            <select id="divisionFilter">
+              <option value="all">All divisions</option>
+            </select>
+            <button id="refreshBtn" type="button">Refresh Now</button>
+          </div>
+
+          <p class="status-line" id="statusLine">Loading active calls...</p>
+          <ul class="call-list" id="callList"></ul>
+        </aside>
+      </main>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      crossorigin=""
+    ></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
