@@ -1,11 +1,13 @@
-# Python bytecode
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+venv/
+.env
 
-# App-generated cache
-geocode-cache.json
-
-# macOS junk
+# OS
 .DS_Store
-data/geocode-cache.json
-__pycache__/
+
+# Project Specific
+geocode_cache.json
+*.log

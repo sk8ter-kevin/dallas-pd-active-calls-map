@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dallas PD Active Calls Map</title>
+    <title>Dallas PD Active Calls | Command Center</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -20,55 +20,74 @@
   <body>
     <div class="shell">
       <header class="topbar">
-        <div>
-          <p class="eyebrow">Public Safety Monitor</p>
-          <h1>Dallas PD Active Calls</h1>
-          <p class="subtitle">
-            Live calls for service mapped from Dallas Open Data.
-          </p>
+        <div class="branding">
+          <div class="indicator"></div>
+          <h1>Dallas PD <span class="highlight">Active Calls</span></h1>
         </div>
-        <div class="stats">
-          <article class="stat-card">
-            <p class="stat-label">Total Calls</p>
-            <p class="stat-value" id="totalCalls">0</p>
-          </article>
-          <article class="stat-card">
-            <p class="stat-label">Mapped</p>
-            <p class="stat-value" id="mappedCalls">0</p>
-          </article>
-          <article class="stat-card">
-            <p class="stat-label">Unmapped</p>
-            <p class="stat-value" id="unmappedCalls">0</p>
-          </article>
+        
+        <div class="stats-bar">
+          <div class="stat-item">
+            <span class="label">Total</span>
+            <span class="value" id="totalCalls">--</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Mapped</span>
+            <span class="value" id="mappedCalls">--</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Pending</span>
+            <span class="value" id="unmappedCalls">--</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Last Upd</span>
+            <span class="value small" id="lastUpdated">--</span>
+          </div>
+        </div>
+
+        <div class="actions">
+           <button id="refreshBtn" type="button">
+            <span class="icon">↻</span> Refresh
+           </button>
         </div>
       </header>
 
-      <main class="layout">
-        <section class="map-panel">
-          <div id="map" aria-label="Map of active Dallas PD calls"></div>
-          <div class="legend">
-            <p class="legend-title">Priority</p>
-            <div class="legend-grid">
-              <span><i class="dot p1"></i>1</span>
-              <span><i class="dot p2"></i>2</span>
-              <span><i class="dot p3"></i>3</span>
-              <span><i class="dot p4"></i>4</span>
-              <span><i class="dot p0"></i>Unknown</span>
-            </div>
+      <main class="dashboard-grid">
+        <section class="map-container">
+          <div id="map"></div>
+          <div class="map-overlay-legend">
+            <div class="legend-row"><span class="dot p1"></span> P1 (Critical)</div>
+            <div class="legend-row"><span class="dot p2"></span> P2 (Urgent)</div>
+            <div class="legend-row"><span class="dot p3"></span> P3 (Standard)</div>
+            <div class="legend-row"><span class="dot p4"></span> P4 (Non-Emergency)</div>
           </div>
         </section>
 
-        <aside class="side-panel">
-          <div class="controls">
-            <label for="divisionFilter">Division</label>
-            <select id="divisionFilter">
-              <option value="all">All divisions</option>
-            </select>
-            <button id="refreshBtn" type="button">Refresh Now</button>
+        <aside class="sidebar">
+          <div class="filters">
+            <div class="filter-group">
+              <label>Division</label>
+              <select id="divisionFilter">
+                <option value="all">ALL DIVISIONS</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Search</label>
+              <input type="text" id="searchInput" placeholder="Incident #, Location..." />
+            </div>
+          </div>
+          
+          <div class="list-header">
+            <span>Active Incidents</span>
+            <span class="count-badge" id="listCount">0</span>
           </div>
 
-          <p class="status-line" id="statusLine">Loading active calls...</p>
-          <ul class="call-list" id="callList"></ul>
+          <ul class="call-list" id="callList">
+            <!-- Items injected here -->
+          </ul>
+          
+          <div class="status-footer" id="statusLine">
+            System Ready
+          </div>
         </aside>
       </main>
     </div>

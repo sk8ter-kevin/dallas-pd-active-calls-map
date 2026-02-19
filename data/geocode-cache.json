@@ -1,0 +1,426 @@
+{
+  "1800 main st, dallas, tx": {
+    "lat": 32.7808026,
+    "lon": -96.7966249,
+    "label": "The Merc, 1800, Main Street, Downtown PID, Dallas, Dallas County, Texas, 75201, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:43:18.955718Z",
+    "updatedAt": "2026-02-19T04:43:18.955718Z"
+  },
+  "1400 san jacinto st, dallas, tx": {
+    "lat": 32.783673,
+    "lon": -96.80184,
+    "label": "1400, San Jacinto Street, Klyde Warren Park-Arts District PID, Downtown PID, Dallas, Dallas County, Texas, 75202, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:43:20.368903Z",
+    "updatedAt": "2026-02-19T04:43:20.368903Z"
+  },
+  "100 s buckner blvd, dallas, tx": {
+    "lat": 32.713751,
+    "lon": -96.682887,
+    "label": "100, South Buckner Boulevard, Dallas, Dallas County, Texas, 75217, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:43:21.805841Z",
+    "updatedAt": "2026-02-19T04:43:21.805841Z"
+  },
+  "n stemmons fwy nb & continental ave, dallas, tx": {
+    "lat": 32.7840199,
+    "lon": -96.812391,
+    "label": "Approximate location (single street fallback)",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:43:28.150229Z",
+    "updatedAt": "2026-02-19T04:43:28.150229Z"
+  },
+  "600 n bishop ave, dallas, tx": {
+    "lat": 32.74957,
+    "lon": -96.827784,
+    "label": "600, North Bishop Avenue, Bishop Arts District, Dallas, Dallas County, Texas, 75208, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:43:29.808732Z",
+    "updatedAt": "2026-02-19T04:43:29.808732Z"
+  },
+  "700 sports st, dallas, tx": {
+    "lat": 32.7725909,
+    "lon": -96.8089014,
+    "label": "700, Sports Street, Downtown PID, Dallas, Dallas County, Texas, 75207, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:43:31.529668Z",
+    "updatedAt": "2026-02-19T04:43:31.529668Z"
+  },
+  "ferguson rd & altura ave, dallas, tx": {
+    "lat": 32.821751750000004,
+    "lon": -96.69048815,
+    "label": "Approximate intersection midpoint (street fallback)",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:43:37.529545Z",
+    "updatedAt": "2026-02-19T04:43:37.529545Z"
+  },
+  "10000 goodyear dr, dallas, tx": {
+    "lat": 32.881173,
+    "lon": -96.875992,
+    "label": "10000, Goodyear Drive, Oldham, Dallas, Dallas County, Texas, 75229, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:49:23.801209Z",
+    "updatedAt": "2026-02-19T04:49:23.801209Z"
+  },
+  "9400 poppy dr, dallas, tx": {
+    "lat": 32.8353082,
+    "lon": -96.705359,
+    "label": "9400, Poppy Drive, Dallas, Dallas County, Texas, 75218, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:49:25.404661Z",
+    "updatedAt": "2026-02-19T04:49:25.404661Z"
+  },
+  "4200 swiss ave, dallas, tx": {
+    "lat": 32.7956995,
+    "lon": -96.7772717,
+    "label": "4200, Swiss Avenue, Old East Dallas, Dallas, Dallas County, Texas, 75204, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:49:26.996733Z",
+    "updatedAt": "2026-02-19T04:49:26.996733Z"
+  },
+  "7100 east grand serv e, dallas, tx": {
+    "lat": null,
+    "lon": null,
+    "label": "",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:49:28.642202Z",
+    "updatedAt": "2026-02-19T04:49:28.642202Z"
+  },
+  "2300 n stemmons serv sb, dallas, tx": {
+    "lat": null,
+    "lon": null,
+    "label": "",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:49:30.262728Z",
+    "updatedAt": "2026-02-19T04:49:30.262728Z"
+  },
+  "2200 w northwest hwy, dallas, tx": {
+    "lat": 32.863875,
+    "lon": -96.898473,
+    "label": "2200, West Northwest Highway, Dallas, Dallas County, Texas, 75220, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:49:32.125192Z",
+    "updatedAt": "2026-02-19T04:49:32.125192Z"
+  },
+  "6900 parkdale dr, dallas, tx": {
+    "lat": 32.7704561,
+    "lon": -96.7015978,
+    "label": "6900, Parkdale Drive, Dallas, Dallas County, Texas, 75227, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:49:33.823951Z",
+    "updatedAt": "2026-02-19T04:49:33.823951Z"
+  },
+  "13600 vida ln, dallas, tx": {
+    "lat": 32.679151,
+    "lon": -96.598488,
+    "label": "13600, Vida Lane, Dallas, Dallas County, Texas, 75253, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:49:35.667095Z",
+    "updatedAt": "2026-02-19T04:49:35.667095Z"
+  },
+  "17200 graystone dr, dallas, tx": {
+    "lat": 32.984402,
+    "lon": -96.781268,
+    "label": "17200, Graystone Drive, Renner, Dallas, Dallas County, Texas, 75248, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:51:37.420848Z",
+    "updatedAt": "2026-02-19T04:51:37.420848Z"
+  },
+  "cypress ave & briggs st, dallas, tx": {
+    "lat": 32.702323050000004,
+    "lon": -96.69216184999999,
+    "label": "Approximate intersection midpoint (street fallback)",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:51:47.353545Z",
+    "updatedAt": "2026-02-19T04:51:47.353545Z"
+  },
+  "1600 n stemmons fwy nb, dallas, tx": {
+    "lat": null,
+    "lon": null,
+    "label": "",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:51:48.890113Z",
+    "updatedAt": "2026-02-19T04:51:48.890113Z"
+  },
+  "3800 black oak dr, dallas, tx": {
+    "lat": 32.680687,
+    "lon": -96.761088,
+    "label": "3800, Black Oak Drive, Dallas, Dallas County, Texas, 75241, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:51:50.429226Z",
+    "updatedAt": "2026-02-19T04:51:50.429226Z"
+  },
+  "3100 chapel creek dr, dallas, tx": {
+    "lat": 32.871976,
+    "lon": -96.870165,
+    "label": "3100, Chapel Creek Drive, Dallas, Dallas County, Texas, 75220, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:51:51.998882Z",
+    "updatedAt": "2026-02-19T04:51:51.998882Z"
+  },
+  "9100 john w carpenter serv sb, dallas, tx": {
+    "lat": null,
+    "lon": null,
+    "label": "",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:51:53.501673Z",
+    "updatedAt": "2026-02-19T04:51:53.501673Z"
+  },
+  "2300 norwood dr, dallas, tx": {
+    "lat": 32.839307,
+    "lon": -96.675997,
+    "label": "2300, Norwood Drive, Reinhardt, Dallas, Dallas County, Texas, 75228, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:51:55.135970Z",
+    "updatedAt": "2026-02-19T04:51:55.135970Z"
+  },
+  "10400 l b j fwy eb, dallas, tx": {
+    "lat": null,
+    "lon": null,
+    "label": "",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:51:56.784252Z",
+    "updatedAt": "2026-02-19T04:51:56.784252Z"
+  },
+  "n pearl expy & main st, dallas, tx": {
+    "lat": 32.7824322,
+    "lon": -96.7920072,
+    "label": "Approximate intersection midpoint (street fallback)",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:04.124337Z",
+    "updatedAt": "2026-02-19T04:52:04.124337Z"
+  },
+  "everglade rd & n jim miller rd, dallas, tx": {
+    "lat": 32.7728069,
+    "lon": -96.70417265,
+    "label": "Approximate intersection midpoint (street fallback)",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:10.733972Z",
+    "updatedAt": "2026-02-19T04:52:10.733972Z"
+  },
+  "5100 cash rd, dallas, tx": {
+    "lat": 32.8103057,
+    "lon": -96.882165,
+    "label": "5100, Cash Road, Dallas, Dallas County, Texas, 75247, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:12.360696Z",
+    "updatedAt": "2026-02-19T04:52:12.360696Z"
+  },
+  "6000 abrams rd, dallas, tx": {
+    "lat": 32.8825508,
+    "lon": -96.7414893,
+    "label": "Abrams Road, Lake Highlands, Dallas, Dallas County, Texas, 75238, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:14.045886Z",
+    "updatedAt": "2026-02-19T04:52:14.045886Z"
+  },
+  "1700 kraft st, dallas, tx": {
+    "lat": 32.784006,
+    "lon": -96.84652,
+    "label": "1700, Kraft Street, Dallas, Dallas County, Texas, 75212, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:15.616496Z",
+    "updatedAt": "2026-02-19T04:52:15.616496Z"
+  },
+  "2500 webb chapel ext, dallas, tx": {
+    "lat": null,
+    "lon": null,
+    "label": "",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:17.224957Z",
+    "updatedAt": "2026-02-19T04:52:17.224957Z"
+  },
+  "300 w kiest blvd, dallas, tx": {
+    "lat": 32.7053472,
+    "lon": -96.8282865,
+    "label": "West Kiest Boulevard, Dallas, Dallas County, Texas, 75224, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:18.802439Z",
+    "updatedAt": "2026-02-19T04:52:18.802439Z"
+  },
+  "900 park ave, dallas, tx": {
+    "lat": 32.776402,
+    "lon": -96.791297,
+    "label": "900, Park Avenue, Downtown PID, Dallas, Dallas County, Texas, 75201, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:20.412424Z",
+    "updatedAt": "2026-02-19T04:52:20.412424Z"
+  },
+  "n central expy nb & midpark rd, dallas, tx": {
+    "lat": 32.9366286,
+    "lon": -96.7607415,
+    "label": "Approximate location (single street fallback)",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:26.526553Z",
+    "updatedAt": "2026-02-19T04:52:26.526553Z"
+  },
+  "600 n zang blvd, dallas, tx": {
+    "lat": 32.7470445,
+    "lon": -96.8245204,
+    "label": "North Zang Boulevard, Bishop Arts District, Dallas, Dallas County, Texas, 75203, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:28.420902Z",
+    "updatedAt": "2026-02-19T04:52:28.420902Z"
+  },
+  "9700 harry hines blvd, dallas, tx": {
+    "lat": 32.852336,
+    "lon": -96.87814,
+    "label": "9700, Harry Hines Boulevard, Dallas, Dallas County, Texas, 75220, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:30.105132Z",
+    "updatedAt": "2026-02-19T04:52:30.105132Z"
+  },
+  "4800 scyene rd, dallas, tx": {
+    "lat": 32.766219,
+    "lon": -96.73746,
+    "label": "4800, Scyene Road, Dallas, Dallas County, Texas, 75227, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:31.694338Z",
+    "updatedAt": "2026-02-19T04:52:31.694338Z"
+  },
+  "4100 ladale dr, dallas, tx": {
+    "lat": 32.7923644,
+    "lon": -96.8801337,
+    "label": "4100, Ladale Drive, Dallas, Dallas County, Texas, 75212, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:33.333834Z",
+    "updatedAt": "2026-02-19T04:52:33.333834Z"
+  },
+  "14200 dallas pkwy, dallas, tx": {
+    "lat": 32.943075,
+    "lon": -96.82181,
+    "label": "14200, Dallas Parkway, Inwood, Dallas, Dallas County, Texas, 75254, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:34.963123Z",
+    "updatedAt": "2026-02-19T04:52:34.963123Z"
+  },
+  "dallas north tollway sb & frankford rd, dallas, tx": {
+    "lat": 32.921848600000004,
+    "lon": -96.83567205,
+    "label": "Approximate intersection midpoint (street fallback)",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:41.246642Z",
+    "updatedAt": "2026-02-19T04:52:41.246642Z"
+  },
+  "5600 live oak st, dallas, tx": {
+    "lat": 32.808937,
+    "lon": -96.765145,
+    "label": "5600, Live Oak Street, Swiss Avenue Historic District, Dallas, Dallas County, Texas, 75206, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:42.868785Z",
+    "updatedAt": "2026-02-19T04:52:42.868785Z"
+  },
+  "9000 markville dr, dallas, tx": {
+    "lat": 32.914451,
+    "lon": -96.749376,
+    "label": "9000, Markville Drive, Lake Highlands, Bouchard, Dallas, Dallas County, Texas, 75243, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:44.307092Z",
+    "updatedAt": "2026-02-19T04:52:44.307092Z"
+  },
+  "w wheatland rd & marvin d love serv nb, dallas, tx": {
+    "lat": 32.6478819,
+    "lon": -96.8370556,
+    "label": "Approximate location (single street fallback)",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:50.545025Z",
+    "updatedAt": "2026-02-19T04:52:50.545025Z"
+  },
+  "7500 chaucer pl, dallas, tx": {
+    "lat": 32.6562683,
+    "lon": -96.8667967,
+    "label": "7500, Chaucer Place, Dallas, Dallas County, Texas, 75237, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:52.080978Z",
+    "updatedAt": "2026-02-19T04:52:52.080978Z"
+  },
+  "3500 ross ave, dallas, tx": {
+    "lat": 32.796242,
+    "lon": -96.788014,
+    "label": "3500, Ross Avenue, Roseland Neighborhood, Old East Dallas, Dallas, Dallas County, Texas, 75204, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:58.377342Z",
+    "updatedAt": "2026-02-19T04:52:58.377342Z"
+  },
+  "14000 brookgreen dr, dallas, tx": {
+    "lat": 32.932992,
+    "lon": -96.7636228,
+    "label": "14000, Brookgreen Drive, Dallas, Dallas County, Texas, 75240, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:52:59.688027Z",
+    "updatedAt": "2026-02-19T04:52:59.688027Z"
+  },
+  "s r l thornton fwy sb & e colorado blvd, dallas, tx": {
+    "lat": 32.738721,
+    "lon": -96.81975885,
+    "label": "Approximate intersection midpoint (street fallback)",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:53:07.329580Z",
+    "updatedAt": "2026-02-19T04:53:07.329580Z"
+  },
+  "cedar springs rd & wycliff ave, dallas, tx": {
+    "lat": 32.80437515,
+    "lon": -96.8127851,
+    "label": "Approximate intersection midpoint (street fallback)",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:53:13.678388Z",
+    "updatedAt": "2026-02-19T04:53:13.678388Z"
+  },
+  "7600 texridge dr, dallas, tx": {
+    "lat": 32.656546,
+    "lon": -96.823942,
+    "label": "7600, Texridge Drive, Dallas, Dallas County, Texas, 75232, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:53:15.221001Z",
+    "updatedAt": "2026-02-19T04:53:15.221001Z"
+  },
+  "8300 la prada dr, dallas, tx": {
+    "lat": 32.8077835,
+    "lon": -96.6674794,
+    "label": "8300, La Prada Drive, Dallas, Dallas County, Texas, 79150, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:53:16.852444Z",
+    "updatedAt": "2026-02-19T04:53:16.852444Z"
+  },
+  "1500 empire central, dallas, tx": {
+    "lat": 32.8262072,
+    "lon": -96.8660837,
+    "label": "1500, Empire Central Drive, Dallas, Dallas County, Texas, 75247, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:53:18.696177Z",
+    "updatedAt": "2026-02-19T04:53:18.696177Z"
+  },
+  "dallas pkwy & plano, dallas, tx": {
+    "lat": 33.0155754,
+    "lon": -96.8296838,
+    "label": "Dallas Parkway, Plano, Collin County, Texas, 75287, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:53:20.325942Z",
+    "updatedAt": "2026-02-19T04:53:20.325942Z"
+  },
+  "4500 kushla ave, dallas, tx": {
+    "lat": 32.688372,
+    "lon": -96.8082513,
+    "label": "4500, Kushla Avenue, Dallas, Dallas County, Texas, 75216, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:57:18.434891Z",
+    "updatedAt": "2026-02-19T04:57:18.434891Z"
+  },
+  "3700 pueblo st, dallas, tx": {
+    "lat": 32.780695,
+    "lon": -96.880908,
+    "label": "3700, Pueblo Street, Dallas, Dallas County, Texas, 75212, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:57:20.089699Z",
+    "updatedAt": "2026-02-19T04:57:20.089699Z"
+  },
+  "3900 n hampton rd, dallas, tx": {
+    "lat": 32.7898201,
+    "lon": -96.8560537,
+    "label": "3900, North Hampton Road, Dallas, Dallas County, Texas, 75208, United States",
+    "provider": "nominatim",
+    "lastAttempt": "2026-02-19T04:57:22.717134Z",
+    "updatedAt": "2026-02-19T04:57:22.717134Z"
+  }
+}
