@@ -26,6 +26,8 @@ let map = null;
 let markerLayer = null;
 let markersByIncident = new Map();
 let firstLoad = true;
+let consecutiveErrors = 0;
+const MAX_DISPLAY = 200;
 
 // --- Elements ---
 const el = {
@@ -231,7 +233,8 @@ function renderList(calls) {
     return;
   }
 
-  const html = calls.slice(0, 100).map(call => {
+  const truncated = calls.length > MAX_DISPLAY;
+  const html = calls.slice(0, MAX_DISPLAY).map(call => {
     const p = call.priority || '?';
     const ago = timeAgo(call.date, call.time);
     const loc = call.address || call.location || "Unknown Location";
@@ -261,7 +264,8 @@ function renderList(calls) {
     `;
   }).join("");
 
-  el.callList.innerHTML = html;
+  el.callList.innerHTML = html
+    + (truncated ? `<li style="padding:0.75rem 1rem; color:var(--text-dim); text-align:center; font-size:0.8rem">Showing ${MAX_DISPLAY} of ${calls.length} incidents</li>` : "");
 }
 
 function updateStats(data, callsPerIncident) {
@@ -318,21 +322,27 @@ function render() {
 }
 
 async function fetchCalls() {
-  el.refreshBtn.classList.add("spinning"); // pure css spin animation if we had it
+  el.refreshBtn.classList.add("spinning");
   try {
     const res = await fetch(API_CALLS_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
     allCallsRaw = data.calls || [];
     consolidatedCalls = consolidateData(allCallsRaw);
 
     updateStats(data, consolidatedCalls);
+    // Restore normal polling if we were backing off
+    if (consecutiveErrors > 0) {
+      clearInterval(pollTimer);
+      pollTimer = setInterval(fetchCalls, POLL_INTERVAL_MS);
+    }
+    consecutiveErrors = 0;
 
     if (firstLoad) {
       syncDivisions();
       firstLoad = false;
 
-      // Auto-fit bounds if we have points
       const mapped = consolidatedCalls.filter(c => c.lat && c.lon);
       if (mapped.length > 0) {
         const group = L.featureGroup(mapped.map(c => L.marker([c.lat, c.lon])));
@@ -342,9 +352,14 @@ async function fetchCalls() {
 
     render();
   } catch (e) {
-    el.statusLine.textContent = "Connection Lost";
-    el.statusLine.style.color = "red";
-    console.error(e);
+    consecutiveErrors++;
+    const retryIn = Math.min(consecutiveErrors * POLL_INTERVAL_MS, 60000);
+    el.statusLine.textContent = `Connection lost \u2013 retrying in ${Math.round(retryIn / 1000)}s`;
+    el.statusLine.style.color = "#ff3344";
+    console.error("Fetch failed:", e);
+    // Back off: skip the next scheduled poll and retry after delay
+    clearInterval(pollTimer);
+    pollTimer = setInterval(fetchCalls, retryIn);
   } finally {
     el.refreshBtn.classList.remove("spinning");
   }
@@ -353,11 +368,15 @@ async function fetchCalls() {
 async function triggerRefresh() {
   el.refreshBtn.disabled = true;
   el.statusLine.textContent = "Requesting update...";
+  el.statusLine.style.color = "var(--accent-primary)";
   try {
-    await fetch(API_REFRESH_URL);
-    setTimeout(fetchCalls, 1000); // Wait a bit for backend to process
+    const res = await fetch(API_REFRESH_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    await fetchCalls();
   } catch (e) {
-    console.error(e);
+    el.statusLine.textContent = "Refresh failed";
+    el.statusLine.style.color = "#ff3344";
+    console.error("Refresh failed:", e);
   } finally {
     el.refreshBtn.disabled = false;
   }
@@ -370,6 +389,7 @@ el.divisionFilter.addEventListener("change", render);
 el.searchInput.addEventListener("input", render);
 
 // --- Boot ---
+let pollTimer;
 initMap();
 fetchCalls();
-setInterval(fetchCalls, POLL_INTERVAL_MS);
+pollTimer = setInterval(fetchCalls, POLL_INTERVAL_MS);

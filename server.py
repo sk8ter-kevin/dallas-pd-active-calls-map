@@ -9,6 +9,7 @@ Serves static frontend files plus API endpoints:
 
 import asyncio
 import json
+import logging
 import os
 import re
 import time
@@ -22,6 +23,14 @@ import httpx
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
+
+# --- Logging ---
+logging.basicConfig(
+    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+logger = logging.getLogger("dallas-pd")
 
 # --- Configuration ---
 HOST = os.environ.get("HOST", "0.0.0.0")  # Bind to all interfaces by default for container friendliness
@@ -183,7 +192,7 @@ def persistence_sync():
         serialized = json.dumps(STATE.geocode_cache, indent=2)
         CACHE_FILE.write_text(serialized, encoding="utf-8")
     except Exception as e:
-        print(f"Failed to persist cache: {e}")
+        logger.error("Failed to persist cache: %s", e)
 
 
 def load_cache_sync():
@@ -194,9 +203,9 @@ def load_cache_sync():
         parsed = json.loads(raw)
         if isinstance(parsed, dict):
             STATE.geocode_cache = parsed
-            print(f"Loaded {len(STATE.geocode_cache)} geocoded locations.")
+            logger.info("Loaded %d geocoded locations.", len(STATE.geocode_cache))
     except Exception as e:
-        print(f"Unable to load geocode cache: {e}")
+        logger.error("Unable to load geocode cache: %s", e)
 
 
 # --- Async Actions ---
@@ -214,7 +223,7 @@ async def fetch_active_calls(client: httpx.AsyncClient) -> List[dict[str, Any]]:
             raise ValueError("Response is not a list")
         return rows
     except Exception as e:
-        print(f"Fetch error: {e}")
+        logger.error("Fetch error: %s", e)
         return []
 
 
@@ -310,26 +319,27 @@ async def should_attempt_geocode(address: Optional[str]) -> bool:
     return (time.time() - last_attempt) > FAILED_RETRY_INTERVAL_SECONDS
 
 
+async def do_single_fetch(client: httpx.AsyncClient):
+    """Fetch active calls once and update state."""
+    raw_calls = await fetch_active_calls(client)
+    next_state = [to_client_call(row) for row in raw_calls]
+    async with STATE.lock:
+        STATE.calls = next_state
+        STATE.last_updated_at = utc_now_iso()
+        STATE.last_error = None
+
+
 async def call_fetch_loop():
     """Fetches active calls from Dallas Open Data periodically."""
     async with httpx.AsyncClient() as client:
         while True:
             try:
-                raw_calls = await fetch_active_calls(client)
-                
-                # Transform and update state
-                next_state = [to_client_call(row) for row in raw_calls]
-                
-                async with STATE.lock:
-                    STATE.calls = next_state
-                    STATE.last_updated_at = utc_now_iso()
-                    STATE.last_error = None
-                
+                await do_single_fetch(client)
             except Exception as e:
-                print(f"Data fetch loop error: {e}")
+                logger.error("Data fetch loop error: %s", e)
                 async with STATE.lock:
                     STATE.last_error = str(e)
-            
+
             await asyncio.sleep(REFRESH_INTERVAL_SECONDS)
 
 
@@ -369,20 +379,17 @@ async def geocode_worker_loop():
                     
                     async with STATE.lock:
                         STATE.geocode_cache[get_cache_key(target_address)] = entry
-                        STATE.geocode_attempts_this_run += 1 # Just a counter for stats
-                    
-                    persistence_sync()
-                    
-                    # Update the in-memory STATE.calls to reflect new coords immediately if present
-                    # (Optional optimization: waiting for next fetch loop is also fine, 
-                    # but immediate feedback is nicer)
-                    async with STATE.lock:
+                        STATE.geocode_attempts_this_run += 1
+                        # Update in-memory calls to reflect new coords immediately
                         for call in STATE.calls:
                             if get_cache_key(call.get("address") or "") == get_cache_key(target_address):
                                 call.update(read_geo_from_cache(target_address) or {})
 
+                    # Persist cache to disk off the event loop
+                    await asyncio.to_thread(persistence_sync)
+
                 except Exception as e:
-                    print(f"Geocode worker error for {target_address}: {e}")
+                    logger.warning("Geocode worker error for %s: %s", target_address, e)
                 
                 # 3. Rate Limit Delay
                 # Strict 1 second delay between requests to be safe
@@ -394,17 +401,40 @@ async def geocode_worker_loop():
 
 # --- FastAPI App ---
 
+def _supervised_task(coro, name: str):
+    """Wrap a coroutine so crashes are logged instead of silently swallowed."""
+    async def wrapper():
+        try:
+            await coro()
+        except asyncio.CancelledError:
+            logger.info("Task %s cancelled.", name)
+        except Exception:
+            logger.exception("Background task %s crashed.", name)
+    return wrapper
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
     load_cache_sync()
-    asyncio.create_task(call_fetch_loop())
-    asyncio.create_task(geocode_worker_loop())
+    fetch_task = asyncio.create_task(_supervised_task(call_fetch_loop, "call_fetch_loop")())
+    geocode_task = asyncio.create_task(_supervised_task(geocode_worker_loop, "geocode_worker_loop")())
     yield
-    # Shutdown
+    fetch_task.cancel()
+    geocode_task.cancel()
     persistence_sync()
 
 app = FastAPI(title="Dallas PD Active Calls Map", lifespan=lifespan)
+
+# Shared client for on-demand refreshes (created lazily)
+_refresh_client: Optional[httpx.AsyncClient] = None
+
+
+async def _get_refresh_client() -> httpx.AsyncClient:
+    global _refresh_client
+    if _refresh_client is None or _refresh_client.is_closed:
+        _refresh_client = httpx.AsyncClient()
+    return _refresh_client
+
 
 @app.get("/api/calls")
 async def get_calls():
@@ -413,9 +443,9 @@ async def get_calls():
         updated_at = STATE.last_updated_at
         error = STATE.last_error
         attempts = STATE.geocode_attempts_this_run
-        
+
     mapped = [c for c in calls_copy if safe_float(c.get("lat")) is not None]
-    
+
     return {
         "updatedAt": updated_at,
         "totalCalls": len(calls_copy),
@@ -423,14 +453,21 @@ async def get_calls():
         "unmappedCalls": len(calls_copy) - len(mapped),
         "geocodeAttemptsThisRun": attempts,
         "error": error,
-        "calls": calls_copy
+        "calls": calls_copy,
     }
+
 
 @app.get("/api/refresh")
 async def trigger_refresh():
-    # Trigger background fetch immediately
-    asyncio.create_task(call_fetch_loop())
-    return {"status": "refresh_triggered"}
+    """Trigger a single immediate data refresh (does NOT spawn a loop)."""
+    try:
+        client = await _get_refresh_client()
+        await do_single_fetch(client)
+        return {"status": "refresh_complete"}
+    except Exception as e:
+        logger.error("Manual refresh failed: %s", e)
+        raise HTTPException(status_code=502, detail="Refresh failed") from e
+
 
 @app.get("/health")
 async def health():
