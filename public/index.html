@@ -45,7 +45,7 @@
         </div>
 
         <div class="actions">
-           <button id="refreshBtn" type="button">
+           <button id="refreshBtn" type="button" aria-label="Refresh data">
             <span class="icon">↻</span> Refresh
            </button>
         </div>
@@ -65,14 +65,23 @@
         <aside class="sidebar">
           <div class="filters">
             <div class="filter-group">
-              <label>Division</label>
+              <label for="divisionFilter">Division</label>
               <select id="divisionFilter">
                 <option value="all">ALL DIVISIONS</option>
               </select>
             </div>
             <div class="filter-group">
-              <label>Search</label>
-              <input type="text" id="searchInput" placeholder="Incident #, Location..." />
+              <label for="searchInput">Search</label>
+              <input type="text" id="searchInput" placeholder="Incident #, Location... (/ to focus)" />
+            </div>
+            <div class="filter-group">
+              <label>Priority</label>
+              <div class="priority-toggles" id="priorityToggles">
+                <button type="button" class="priority-btn active" data-priority="1">P1</button>
+                <button type="button" class="priority-btn active" data-priority="2">P2</button>
+                <button type="button" class="priority-btn active" data-priority="3">P3</button>
+                <button type="button" class="priority-btn active" data-priority="4">P4</button>
+              </div>
             </div>
           </div>
           
