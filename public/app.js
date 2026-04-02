@@ -80,6 +80,10 @@ function getPriorityColor(p) {
   return PRIORITY_COLORS[p] || PRIORITY_COLORS.default;
 }
 
+function hasValidCoords(call) {
+  return Number.isFinite(call.lat) && Number.isFinite(call.lon);
+}
+
 function formatTime(isoString) {
   if (!isoString) return "--:--";
   const date = new Date(isoString);
@@ -199,7 +203,7 @@ function buildPopupContent(call) {
 }
 
 function updateMarkers(visibleCalls) {
-  const mapped = visibleCalls.filter(c => c.lat != null && c.lon != null);
+  const mapped = visibleCalls.filter(hasValidCoords);
   const currentIds = new Set(mapped.map(c => c.incidentNumber));
 
   // Remove markers no longer in view
@@ -258,7 +262,7 @@ function renderList(calls) {
     const p = call.priority || '?';
     const ago = timeAgo(call.date, call.time);
     const loc = call.address || call.location || "Unknown Location";
-    const mappedIcon = (call.lat && call.lon)
+    const mappedIcon = hasValidCoords(call)
       ? `<span role="img" aria-label="Mapped" style="color:#00cc66" title="Mapped">&#x1F4CD;</span>`
       : `<span role="img" aria-label="Not mapped" style="color:#444" title="Not Mapped">&#x26AA;</span>`;
 
@@ -302,7 +306,7 @@ function updateStats(data, callsPerIncident) {
 
   el.totalCalls.innerHTML = `${callsPerIncident.length} <span style="font-size:0.6em; color:#888; text-transform:uppercase">Incidents</span>`;
 
-  const mappedCount = callsPerIncident.filter(c => c.lat && c.lon).length;
+  const mappedCount = callsPerIncident.filter(hasValidCoords).length;
   el.mappedCalls.textContent = mappedCount;
   el.unmappedCalls.textContent = callsPerIncident.length - mappedCount;
 
@@ -352,7 +356,9 @@ function syncDivisions() {
   const divs = new Set(consolidatedCalls.map(c => c.division).filter(Boolean));
   const sorted = Array.from(divs).sort();
 
-  const opts = sorted.map(d => `<option value="${d}">${d}</option>`).join("");
+  const opts = sorted
+    .map(d => `<option value="${escapeHtml(d)}">${escapeHtml(d)}</option>`)
+    .join("");
   el.divisionFilter.innerHTML = `<option value="all">ALL DIVISIONS</option>` + opts;
 
   if (sorted.includes(current)) el.divisionFilter.value = current;
@@ -364,7 +370,7 @@ window.focusCall = function (incidentNumber) {
   const call = consolidatedCalls.find(c => c.incidentNumber === incidentNumber);
   if (!call) return;
 
-  if (call.lat && call.lon) {
+  if (hasValidCoords(call)) {
     map.flyTo([call.lat, call.lon], 16, { animate: true, duration: 1.5 });
     const marker = markersByIncident.get(incidentNumber);
     if (marker) marker.openPopup();
@@ -398,6 +404,7 @@ async function fetchCalls() {
     consolidatedCalls = consolidateData(allCallsRaw);
 
     updateStats(data, consolidatedCalls);
+    syncDivisions();
     if (consecutiveErrors > 0) {
       clearInterval(pollTimer);
       pollTimer = setInterval(fetchCalls, POLL_INTERVAL_MS);
@@ -405,10 +412,9 @@ async function fetchCalls() {
     consecutiveErrors = 0;
 
     if (firstLoad) {
-      syncDivisions();
       firstLoad = false;
 
-      const mapped = consolidatedCalls.filter(c => c.lat && c.lon);
+      const mapped = consolidatedCalls.filter(hasValidCoords);
       if (mapped.length > 0) {
         const group = L.featureGroup(mapped.map(c => L.marker([c.lat, c.lon])));
         map.fitBounds(group.getBounds(), { padding: [50, 50] });

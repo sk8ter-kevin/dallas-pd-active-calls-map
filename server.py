@@ -66,6 +66,7 @@ class AppState:
     last_updated_at: Optional[str] = None
     last_error: Optional[str] = None
     geocode_attempts_this_run: int = 0
+    geocode_attempts_since_refresh: int = 0
     refresh_in_flight: bool = False
     lock: asyncio.Lock = field(default_factory=asyncio.Lock)
 
@@ -211,20 +212,16 @@ def load_cache_sync():
 # --- Async Actions ---
 
 async def fetch_active_calls(client: httpx.AsyncClient) -> List[dict[str, Any]]:
-    try:
-        resp = await client.get(
-            DALLAS_CALLS_URL,
-            headers={"Accept": "application/json", "User-Agent": GEOCODER_USER_AGENT},
-            timeout=25.0
-        )
-        resp.raise_for_status()
-        rows = resp.json()
-        if not isinstance(rows, list):
-            raise ValueError("Response is not a list")
-        return rows
-    except Exception as e:
-        logger.error("Fetch error: %s", e)
-        return []
+    resp = await client.get(
+        DALLAS_CALLS_URL,
+        headers={"Accept": "application/json", "User-Agent": GEOCODER_USER_AGENT},
+        timeout=25.0
+    )
+    resp.raise_for_status()
+    rows = resp.json()
+    if not isinstance(rows, list):
+        raise ValueError("Response is not a list")
+    return rows
 
 
 async def nominatim_lookup(client: httpx.AsyncClient, query: str) -> Optional[dict[str, Any]]:
@@ -327,6 +324,7 @@ async def do_single_fetch(client: httpx.AsyncClient):
         STATE.calls = next_state
         STATE.last_updated_at = utc_now_iso()
         STATE.last_error = None
+        STATE.geocode_attempts_since_refresh = 0
 
 
 async def call_fetch_loop():
@@ -352,15 +350,18 @@ async def geocode_worker_loop():
             
             # 1. Find a candidate
             async with STATE.lock:
-                # Prioritize calls that are currently active but have no coordinates
-                for call in STATE.calls:
-                    addr = call.get("address")
-                    # We check the cache directly here to see if we should work on it
-                    # (The 'call' object might be slightly stale if cache updated in bg, 
-                    # but should_attempt_geocode checks the live cache)
-                    if await should_attempt_geocode(addr):
-                        target_address = addr
-                        break
+                if STATE.geocode_attempts_since_refresh >= MAX_GEOCODES_PER_REFRESH:
+                    target_address = None
+                else:
+                    # Prioritize calls that are currently active but have no coordinates
+                    for call in STATE.calls:
+                        addr = call.get("address")
+                        # We check the cache directly here to see if we should work on it
+                        # (The 'call' object might be slightly stale if cache updated in bg,
+                        # but should_attempt_geocode checks the live cache)
+                        if await should_attempt_geocode(addr):
+                            target_address = addr
+                            break
             
             # 2. Work on it
             if target_address:
@@ -380,6 +381,7 @@ async def geocode_worker_loop():
                     async with STATE.lock:
                         STATE.geocode_cache[get_cache_key(target_address)] = entry
                         STATE.geocode_attempts_this_run += 1
+                        STATE.geocode_attempts_since_refresh += 1
                         # Update in-memory calls to reflect new coords immediately
                         for call in STATE.calls:
                             if get_cache_key(call.get("address") or "") == get_cache_key(target_address):
@@ -415,12 +417,15 @@ def _supervised_task(coro, name: str):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    global _refresh_client
     load_cache_sync()
     fetch_task = asyncio.create_task(_supervised_task(call_fetch_loop, "call_fetch_loop")())
     geocode_task = asyncio.create_task(_supervised_task(geocode_worker_loop, "geocode_worker_loop")())
     yield
     fetch_task.cancel()
     geocode_task.cancel()
+    if _refresh_client is not None and not _refresh_client.is_closed:
+        await _refresh_client.aclose()
     persistence_sync()
 
 app = FastAPI(title="Dallas PD Active Calls Map", lifespan=lifespan)
